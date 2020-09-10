@@ -62,10 +62,8 @@ class MainActivity : AppCompatActivity(){
 
       suspend fun processImage(view: ImageView) : Bitmap? = withContext(Dispatchers.Default){
           val start = System.currentTimeMillis()
-        val width = view.width
-        val height = view.height
 
-        Log.d(TAG, String.format("View resolution: %d x %d", width, height))
+        Log.d(TAG, String.format("View resolution: %d x %d", view.width, view.height))
         var ret: Bitmap? = null
         var `in`: InputStream? = null
 
@@ -83,7 +81,7 @@ class MainActivity : AppCompatActivity(){
                 while (skipResolutions < header.numResolutions) {
                     imgWidth = imgWidth shr 1
                     imgHeight = imgHeight shr 1
-                    if (imgWidth < width || imgHeight < height) break else skipResolutions++
+                    if (imgWidth < view.width || imgHeight < view.height) break else skipResolutions++
                 }
                 //we break the loop when skipResolutions goes over the correct value
                 skipResolutions--
