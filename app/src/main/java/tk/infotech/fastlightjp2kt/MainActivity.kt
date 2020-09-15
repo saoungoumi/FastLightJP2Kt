@@ -11,6 +11,7 @@ import kotlinx.coroutines.*
 import java.io.Closeable
 import java.io.IOException
 import java.io.InputStream
+import kotlin.system.measureTimeMillis
 
 
 class MainActivity : AppCompatActivity(){
@@ -36,19 +37,16 @@ class MainActivity : AppCompatActivity(){
             override fun onGlobalLayout() {
                 imgView.viewTreeObserver.removeGlobalOnLayoutListener(this )
 
-
-
+                val outerTime = measureTimeMillis {
                     uiScope.launch {
-                        val start = System.currentTimeMillis()
                         val processedImage = processImage(imgView)
-                        val time = System.currentTimeMillis() - start
-
-                        println("Execution time : " + time + "ms")
 
                         imgView.setImageBitmap(processedImage)
                     }
+                }
 
-//                println("Execution time : " + outerTime.toDouble() + "ms")
+
+                println("Execution time : " + outerTime.toDouble() + "ms")
 
             }
         } )
@@ -69,7 +67,7 @@ class MainActivity : AppCompatActivity(){
 
         try {
 
-                `in` = assets.open("lena-grey.jp2")
+                `in` = assets.open("boat.jp2")
                 val decoder = JP2Decoder(`in`)
                 val header = decoder.readHeader()
                 println("Number of resolutions: " + header.numResolutions)
